@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import NavBar from "./components/NavBar.tsx";
 import Footer from "./components/Footer.tsx";

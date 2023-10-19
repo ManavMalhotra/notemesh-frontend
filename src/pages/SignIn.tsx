@@ -13,8 +13,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { auth, provider, db } from "../utils/firebase";
-import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
@@ -48,7 +48,7 @@ export default function SignIn() {
 
     try {
       signInWithEmailAndPassword(auth, email, password).then(
-        (userCredential) => {
+        () => {
           navigate("/");
         }
       );

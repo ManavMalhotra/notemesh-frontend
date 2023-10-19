@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
 import Editor from "@stfy/react-editor.js";
+// @ts-ignore
 import Header from "@editorjs/header";
+// @ts-ignore
 import List from "@editorjs/list";
 
+
+// @ts-ignore
 function Editorjs({ content }) {
-  
   console.log("Editor: ", content);
 
   return (

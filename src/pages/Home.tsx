@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getAuth } from "firebase/auth";
 import { db } from "../utils/firebase";
-import { collection, doc, getDocs, query } from "firebase/firestore";
-import { Icon, IconButton, Link as MuiLink } from "@mui/material";
+import { collection, getDocs, query } from "firebase/firestore";
+import { IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";

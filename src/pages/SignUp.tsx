@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { auth, provider, db } from "../utils/firebase";
+import { auth } from "../utils/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function Copyright(props: any) {
@@ -40,6 +40,7 @@ export default function SignUp() {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
 
+  // @ts-ignore
   const [name, setName] = React.useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
