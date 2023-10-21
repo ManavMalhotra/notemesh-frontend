@@ -18,11 +18,11 @@ function Note() {
         const noteRef = doc(db, `users/${userId}/notes/${id}`);
         try {
           const noteSnap = await getDoc(noteRef);
-          
+
           // @ts-ignore
           const content = await noteSnap.data().content;
 
-          setNote(content);
+          setNote(JSON.parse(content));
 
           console.log(content);
           setLoading(false);
@@ -33,8 +33,48 @@ function Note() {
         }
       }
     });
+    return () => {
+      unsubscribe();
+    };
 
-    unsubscribe();
+    // setNote({
+    //   "time": 1697901439877,
+    //   "blocks": [
+    //     {
+    //       "id": "aBSc0Zg38x",
+    //       "type": "header",
+    //       "data": {
+    //         "text": "This is my awesome editor!ascssddd",
+    //         "level": 1
+    //       }
+    //     },
+    //     {
+    //       "id": "kzUFhTemKk",
+    //       "type": "header",
+    //       "data": {
+    //         "text": "sdsdfsd",
+    //         "level": 2
+    //       }
+    //     },
+    //     {
+    //       "id": "KHPRRUJnoR",
+    //       "type": "header",
+    //       "data": {
+    //         "text": "szfs dsmsdfm nsdmfn sdfojewf ei ",
+    //         "level": 2
+    //       }
+    //     },
+    //     {
+    //       "id": "NQzrzjjrU2",
+    //       "type": "paragraph",
+    //       "data": {
+    //         "text": "wfwef ewf we efewfwef we<br>"
+    //       }
+    //     }
+    //   ],
+    //   "version": "2.28.2"
+    // });
+    // setLoading(false);
   }, []);
 
   return (

@@ -1,44 +1,59 @@
-import Editor from "@stfy/react-editor.js";
-// @ts-ignore
+// @ts-nocheck
+import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 // @ts-ignore
 import List from "@editorjs/list";
+import { useEffect, useRef } from "react";
 
+const DEFAULT_INITIAL_DATA = {
+  time: new Date().getTime(),
+  blocks: [
+    {
+      type: "header",
+      data: {
+        text: "This is my awesome editor!",
+        level: 1,
+      },
+    },
+  ],
+};
 
-// @ts-ignore
-function Editorjs({ content }) {
+function Editor({ content }) {
   console.log("Editor: ", content);
+  const ejInstance = useRef();
 
-  return (
-    <>
-      <Editor
-        tools={{
-          header: Header,
-          list: List,
-        }}
-        onReady={() => console.log("Start!")}
-        data={{
-          time: 1697635405686,
-          blocks: [
-            {
-              id: "MLTFnT_THe",
-              type: "header",
-              data: { text: "Key Insights", level: 1 },
-            },
-            {
-              id: "UMqzi0U9CW",
-              type: "list",
-              data: {
-                style: "unordered",
-                items: ["Item 1", "Item 2", "Item 3"],
-              },
-            },
-          ],
-          version: "2.28.0",
-        }}
-      />
-    </>
-  );
+  const initEditor = () => {
+    const editor = new EditorJS({
+      holder: "editorjs",
+      onReady: () => {
+        ejInstance.current = editor;
+      },
+      autofocus: true,
+      data: content || DEFAULT_INITIAL_DATA,
+      onChange: async () => {
+        let content = await editor.saver.save();
+
+        console.log(content);
+      },
+      tools: {
+        header: Header,
+        list: List,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (ejInstance.current === null) {
+      initEditor();
+    }
+
+    return () => {
+      ejInstance?.current?.destroy();
+      ejInstance.current = null;
+    };
+  }, []);
+
+  return <div id="editorjs"></div>;
 }
 
-export default Editorjs;
+export default Editor;
