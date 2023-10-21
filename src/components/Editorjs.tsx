@@ -1,7 +1,6 @@
 // @ts-nocheck
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
-// @ts-ignore
 import List from "@editorjs/list";
 import { useEffect, useRef } from "react";
 
