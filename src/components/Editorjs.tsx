@@ -1,7 +1,5 @@
-// import Editor from "@stfy/react-editor.js";
-
+// @ts-nocheck
 import EditorJS from "@editorjs/editorjs";
-// @ts-ignore
 import Header from "@editorjs/header";
 // @ts-ignore
 import List from "@editorjs/list";
@@ -40,7 +38,6 @@ function Editor({ content }) {
       tools: {
         header: Header,
         list: List,
-        
       },
     });
   };
