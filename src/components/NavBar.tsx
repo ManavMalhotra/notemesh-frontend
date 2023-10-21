@@ -46,12 +46,11 @@ export default function NavBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => {
+              navigate("/");
+            }}
           >
-            <MenuIcon
-              onClick={() => {
-                navigate("/");
-              }}
-            />
+            <MenuIcon />
           </IconButton>
 
           {authenticated ? (
