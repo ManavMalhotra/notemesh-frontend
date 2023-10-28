@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -40,14 +41,15 @@ export default function SignUp() {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
 
-  // @ts-ignore
   const [name, setName] = React.useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      createUserWithEmailAndPassword(auth, email, password);
+      createUserWithEmailAndPassword(auth, email, password).then(() => {
+        window.location.href = "/";
+      });
     } catch (error) {
       console.log("error", error);
     }
