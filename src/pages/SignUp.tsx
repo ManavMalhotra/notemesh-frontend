@@ -50,8 +50,10 @@ export default function SignUp() {
       createUserWithEmailAndPassword(auth, email, password).then(() => {
         window.location.href = "/";
       });
-    } catch (error) {
-      console.log("error", error);
+    } catch (error: any) {
+        // Handle other authentication errors
+        alert(error.message);
+      }
     }
   };
 
