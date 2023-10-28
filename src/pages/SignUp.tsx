@@ -47,13 +47,25 @@ export default function SignUp() {
     event.preventDefault();
 
     try {
-      createUserWithEmailAndPassword(auth, email, password).then(() => {
-        window.location.href = "/";
-      });
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "/";
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            alert("Email already in use");
+          } else if (error.code === "auth/invalid-email") {
+            alert("Invalid Email");
+          } else if (error.code === "auth/weak-password") {
+            alert("Weak Password");
+          } else {
+            alert(error.code);
+          }
+        });
     } catch (error: any) {
-        // Handle other authentication errors
-        alert(error.message);
-      }
+      // Handle other authentication errors
+      alert(error.message);
+      console.log(error);
     }
   };
 
