@@ -14,6 +14,7 @@ const ToolBar = () => {
   const handleMenuClick = () => {
     setMenuOpen(!menuOpen);
   };
+  const handleDeleteNote = () => {};
 
   return (
     <div className="flex">
@@ -34,6 +35,7 @@ const ToolBar = () => {
               style={{
                 color: "#ff0000",
               }}
+              onClick={handleDeleteNote}
             />
             <h3 className="text-sm text-white"> Delete</h3>
           </IconButton>
@@ -50,6 +52,11 @@ function Home() {
   const auth = getAuth();
 
   useEffect(() => {
+    // sort notes by date
+    setNotes((notes: any) => notes.sort(notes.createdAt))
+  }, [notes]);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const userId = user.uid;
@@ -58,12 +65,13 @@ function Home() {
         setUser(true);
         try {
           const querySnapshot = await getDocs(notesQuery);
+  
 
           querySnapshot.forEach((doc) => {
             const noteData = doc.data();
 
             console.log("noteData", noteData);
-            // Parse the "editor.js" content back to an object
+            
             const parsedContent = JSON.parse(noteData.content);
 
             setNotes((notes: any) => [
@@ -137,6 +145,7 @@ function Home() {
           display: "grid",
           placeItems: "center",
           paddingTop: "5%",
+          backgroundColor: "#383838",
         }}
       >
         <h1 className="text-4xl text-white">No Notes Found</h1>
@@ -166,12 +175,12 @@ function Home() {
           <div className="grid items-center justify-center grid-cols-1 gap-4 px-5 py-8 md:grid-cols-3">
             {notes.map((note: any) => (
               <div
-                className="flex flex-col min-h-[175px] max-w-sm px-3 py2 mx-2 my-1 text-white rounded-xl hover:bg-[#797979] "
+                className="flex flex-col min-h-[175px] max-w-sm px-3 py2 mx-2 my-1  rounded-xl hover:bg-[#797979] "
                 style={{
-                  backgroundColor: "#000000",
+                  backgroundColor: "#fff",
                 }}
               >
-                <div className="flex flex-row items-center  border-b-[#B1B1B1] border-b-2 justify-between">
+                <div className="flex flex-row items-center  border-b-[#d5] border-b-[0.5px] justify-between">
                   <div className="flex flex-row items-center gap-2 ">
                     <>
                       {/* {note.tag == "personal" ? "🟡 Personal" : "🔴 Work"} */}
@@ -205,7 +214,7 @@ function Home() {
         </>
       ) : (
         <div className="flex items-center justify-center py-8">
-          <h1 className="text-4xl text-white ">
+          <h1 className="text-4xl ">
             Upgrade Your Style of Note Taking using NoteMesh - Extension{" "}
           </h1>
         </div>

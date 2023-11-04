@@ -25,13 +25,14 @@ export default function NavBar() {
   }, []);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1,
+    }}>
       <AppBar
         position="static"
         style={{
           display: "flex",
           justifyContent: "space-between",
-          backgroundColor: "#000000",
+          backgroundColor: "#272727",
         }}
       >
         <Toolbar
