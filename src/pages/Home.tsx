@@ -3,60 +3,18 @@ import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { db } from "../utils/firebase";
 import { collection, getDocs, query } from "firebase/firestore";
-import { IconButton } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-
-const ToolBar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleMenuClick = () => {
-    setMenuOpen(!menuOpen);
-  };
-  const handleDeleteNote = () => {};
-
-  return (
-    <div className="flex">
-      <IconButton onClick={handleMenuClick}>
-        <MoreVertIcon style={{ color: "#fff" }} />
-      </IconButton>
-      <div className={`absolute mt-4 ml-6  ${menuOpen ? "block" : "hidden"} `}>
-        {/* Your menu content goes here */}
-        <ul
-          className="p-2 mt-2 shadow-md"
-          style={{
-            borderRadius: "5px",
-            backgroundColor: "#6b6a6a",
-          }}
-        >
-          <IconButton className="flex gap-2 hover:bg-[#797979] hover:text-[#fff]">
-            <DeleteRoundedIcon
-              style={{
-                color: "#ff0000",
-              }}
-              onClick={handleDeleteNote}
-            />
-            <h3 className="text-sm text-white"> Delete</h3>
-          </IconButton>
-        </ul>
-      </div>
-    </div>
-  );
-};
+import { NewUser } from "../components/NewUser";
+import { ToolBar } from "../components/Toolbar";
+import { Loading } from "../components/Loading";
 
 function Home() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(false);
   const [notes, setNotes] = useState<any>([]);
-
-  const auth = getAuth();
-
-  useEffect(() => {
-    // sort notes by date
-    setNotes((notes: any) => notes.sort(notes.createdAt))
-  }, [notes]);
+  const [loading, setLoading] = useState<any>(true);
 
   useEffect(() => {
+    const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const userId = user.uid;
@@ -65,13 +23,12 @@ function Home() {
         setUser(true);
         try {
           const querySnapshot = await getDocs(notesQuery);
-  
 
           querySnapshot.forEach((doc) => {
             const noteData = doc.data();
 
             console.log("noteData", noteData);
-            
+
             const parsedContent = JSON.parse(noteData.content);
 
             setNotes((notes: any) => [
@@ -87,6 +44,7 @@ function Home() {
                 tag: noteData.tag,
               },
             ]);
+            setLoading(false);
           });
         } catch (error) {
           setUser(null);
@@ -100,72 +58,12 @@ function Home() {
     return unsubscribe;
   }, []);
 
-  if (!user) {
-    return (
-      <div
-        style={{
-          display: "grid",
-          placeItems: "center",
-          paddingTop: "5%",
-        }}
-      >
-        <h1 className="pt-12 pb-6 text-4xl text-white">
-          Ready to Create Notes?
-        </h1>
-        <h1 className="py-6 text-4xl text-white">
-          <span
-            className="text-blue-500 underline cursor-pointer"
-            onClick={() => {
-              window.location.href = "/signin";
-            }}
-          >
-            Sign in
-          </span>{" "}
-          to get started.
-        </h1>
-        <p className="text-lg text-white ">
-          Try our Chrome extension for quick and easy note creation and storage.
-        </p>
-        <a
-          href="https://github.com/ManavMalhotra/NoteMesh-extension"
-          className="text-xl text-blue-500 underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Install our Chrome extension
-        </a>
-      </div>
-    );
+  if (user == null) {
+    return <NewUser />;
   }
 
-  if (notes.length == 0 && user) {
-    return (
-      <div
-        style={{
-          display: "grid",
-          placeItems: "center",
-          paddingTop: "5%",
-          backgroundColor: "#383838",
-        }}
-      >
-        <h1 className="text-4xl text-white">No Notes Found</h1>
-
-        <h1 className="pt-12 pb-6 text-4xl text-white">
-          Ready to Create Notes?
-        </h1>
-        <p className="text-lg text-white ">
-          Try our Chrome extension for quick and easy note creation and storage.
-        </p>
-        <a
-          href="https://github.com/ManavMalhotra/NoteMesh-extension"
-          className="text-xl text-blue-500 underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Install our Chrome extension
-        </a>
-      </div>
-    );
+  if (loading) {
+    return <Loading />;
   }
 
   return (
