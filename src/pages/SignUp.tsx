@@ -40,7 +40,7 @@ export default function SignUp() {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
 
-  // ts-ignore
+  // @ts-ignore
   const [name, setName] = React.useState<string>("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
