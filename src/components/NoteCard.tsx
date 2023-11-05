@@ -1,8 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { ToolBar } from "../components/Toolbar";
 import { db } from "../utils/firebase";
-import { collection, doc, deleteDoc } from "firebase/firestore";
+import {  doc, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 interface Note {

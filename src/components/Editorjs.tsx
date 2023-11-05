@@ -5,8 +5,6 @@ import List from "@editorjs/list";
 import { useState, useEffect, useRef } from "react";
 
 function Editor({ content }) {
-  const [editorContent, setEditorContent] = useState(content);
-
   const ejInstance = useRef();
 
   const initEditor = () => {
@@ -14,9 +12,12 @@ function Editor({ content }) {
       holder: "editorjs",
       onReady: () => {
         ejInstance.current = editor;
+        ejInstance.current.blocks.render({
+          time: new Date().getTime(),
+          blocks: content.blocks,
+        });
       },
       autofocus: true,
-      data: editorContent,
       onChange: async () => {
         let content = await editor.saver.save();
       },
@@ -28,9 +29,11 @@ function Editor({ content }) {
   };
 
   useEffect(() => {
-    setEditorContent(content);
+    if (ejInstance.current !== null) {
+      ejInstance?.current?.destroy();
+    }
 
-    if (ejInstance.current === null) {
+    if(ejInstance.current === null) {
       initEditor();
     }
 
@@ -38,7 +41,7 @@ function Editor({ content }) {
       ejInstance?.current?.destroy();
       ejInstance.current = null;
     };
-  }, []);
+  }, [content]);
 
   return <div id="editorjs"></div>;
 }
