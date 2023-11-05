@@ -29,11 +29,14 @@ function Editor({ content }) {
   };
 
   useEffect(() => {
-    if (ejInstance.current !== null) {
-      ejInstance?.current?.destroy();
+    
+    if(ejInstance.current === null) {
+      initEditor();
     }
 
-    if(ejInstance.current === null) {
+    if (ejInstance.current !== null) {
+      ejInstance?.current?.destroy();
+      ejInstance.current = null;
       initEditor();
     }
 
