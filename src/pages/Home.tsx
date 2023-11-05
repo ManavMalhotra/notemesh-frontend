@@ -103,13 +103,13 @@ function Home() {
   if (selectedNote?.noteClicked) {
     return (
       <div className="grid grid-cols-1 gap-6 px-12 py-6 md:grid-cols-3 lg:grid-cols-4">
-        <div className="col-span-1">
+        <div className="col-span-1 gap-3">
           {notes.map((note: any, i: number) => (
             <NoteCard key={i} note={note} setselectedNote={setselectedNote} />
           ))}
         </div>
         <div className="col-span-3">
-          <Editor content={selectedNote.note.content} />
+          <Editor content={selectedNote.note} />
         </div>
       </div>
     );

@@ -48,7 +48,7 @@ export const NoteCard = ({
     }
   };
   return (
-    <div className="flex flex-col min-w-[300px] min-h-[130px] max-w-[300px] px-3 rounded-xl border">
+    <div className="flex flex-col min-w-[300px] min-h-[130px] max-w-[300px] px-3 my-3 rounded-xl border">
       {/* NOTE TAG UPPER SECTION  */}
       <section className="flex flex-row items-center  border-b-[#d5d5d5] border-b-[0.5px] justify-between">
         <div className="flex flex-row items-center gap-2 ">
