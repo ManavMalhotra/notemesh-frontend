@@ -80,11 +80,25 @@ function Home() {
     return <NewUser />;
   }
 
+  if (loading && notes.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <h1 className="text-4xl ">
+          Upgrade Your Style of Note Taking using NoteMesh -{" "}
+          <span className="text-blue-500 hover:text-blue-600">
+            <a href="https://github.com/ManavMalhotra/NoteMesh-extension">
+              Extension
+            </a>
+          </span>
+        </h1>
+      </div>
+    );
+  }
+
   if (loading) {
     return <Loading />;
   }
-
-  console.log("selectedNote", selectedNote?.note.content)
+  console.log("selectedNote", selectedNote?.note.content);
 
   if (selectedNote?.noteClicked) {
     return (
