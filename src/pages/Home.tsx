@@ -6,11 +6,30 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { NewUser } from "../components/NewUser";
 import { Loading } from "../components/Loading";
 import { NoteCard } from "../components/NoteCard";
+import Editor from "../components/Editorjs";
 
 function Home() {
   const [user, setUser] = useState<any>(false);
   const [notes, setNotes] = useState<any>([]);
   const [loading, setLoading] = useState<any>(true);
+
+  interface Note {
+    id: string;
+    favicon: string;
+    webName: string;
+    url: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    tag: string;
+  }
+
+  interface NoteClicked {
+    note: Note;
+    noteClicked: boolean;
+  }
+
+  const [selectedNote, setselectedNote] = useState<NoteClicked>();
 
   useEffect(() => {
     const auth = getAuth();
@@ -26,7 +45,7 @@ function Home() {
           querySnapshot.forEach((doc) => {
             const noteData = doc.data();
 
-            console.log("noteData", noteData);
+            // console.log("noteData", noteData);
 
             const parsedContent = JSON.parse(noteData.content);
 
@@ -65,11 +84,28 @@ function Home() {
     return <Loading />;
   }
 
+  console.log("selectedNote", selectedNote?.note.content)
+
+  if (selectedNote?.noteClicked) {
+    return (
+      <div className="grid grid-cols-1 gap-6 px-12 py-6 place-items-center md:grid-cols-3 lg:grid-cols-4">
+        <div className="col-span-1">
+          {notes.map((note: any, i: number) => (
+            <NoteCard key={i} note={note} setselectedNote={setselectedNote} />
+          ))}
+        </div>
+        <div className="col-span-3">
+          <Editor content={selectedNote.note.content} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="grid items-center justify-center grid-cols-1 gap-6 px-12 py-6 place-items-center md:grid-cols-3 lg:grid-cols-4">
-        {notes.map((note: any) => (
-          <NoteCard note={note} />
+        {notes.map((note: any, i: number) => (
+          <NoteCard key={i} note={note} setselectedNote={setselectedNote} />
         ))}
       </div>
     </>

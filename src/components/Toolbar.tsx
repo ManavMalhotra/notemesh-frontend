@@ -4,10 +4,7 @@ import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 import "./assets/Toolbar.css";
 
-export const ToolBar = () => {
-
-  const handleDeleteNote = () => {};
-
+export const ToolBar = ({ handleDelete }: { handleDelete: () => void }) => {
   return (
     <div className="paste-button">
       <IconButton className="button">
@@ -15,12 +12,14 @@ export const ToolBar = () => {
       </IconButton>
 
       <div className="dropdown-content">
-        <IconButton className="flex gap-2 hover:bg-[#797979] hover:text-[#fff]">
+        <IconButton
+          className="flex gap-2 hover:bg-[#797979] hover:text-[#fff]"
+          onClick={handleDelete}
+        >
           <DeleteRoundedIcon
             style={{
               color: "#ff0000",
             }}
-            onClick={handleDeleteNote}
           />
           <h3 className="text-sm text-white"> Delete</h3>
         </IconButton>
