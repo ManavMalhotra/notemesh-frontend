@@ -14,7 +14,12 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { auth } from "../utils/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import { Alert } from "@mui/material";
+// import { Alert } from "../components/Alert";
 
 function Copyright(props: any) {
   return (
@@ -40,39 +45,60 @@ export default function SignUp() {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
 
+  const [showAlert, setShowAlert] = React.useState<boolean>(false);
+
   // @ts-ignore
   const [name, setName] = React.useState<string>("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          window.location.href = "/";
-        })
-        .catch((error) => {
-          if (error.code === "auth/email-already-in-use") {
-            alert("Email already in use");
-          } else if (error.code === "auth/invalid-email") {
-            alert("Invalid Email");
-          } else if (error.code === "auth/weak-password") {
-            alert("Weak Password");
-          } else {
-            alert(error.code);
-          }
-        });
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // Send email verification link
+      await sendEmailVerification(userCredential.user);
+
+      console.log("Email verification link sent.");
+      window.localStorage.setItem("emailForSignIn", email);
+      setShowAlert(true);
+
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
     } catch (error: any) {
-      // Handle other authentication errors
-      alert(error.message);
-      console.log(error);
+      if (error.code === "auth/email-already-in-use") {
+        alert("Email already in use");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Invalid Email");
+      } else if (error.code === "auth/weak-password") {
+        alert("Weak Password");
+      } else {
+        alert(error.message);
+      }
+      console.error(error);
     }
   };
+
+  try {
+  } catch (error) {}
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+
+        {showAlert && (
+          <Alert severity="success" onClose={() => setShowAlert(false)}>
+            A verification email has been sent to your email address. Please
+            verify your email before signing in.
+          </Alert>
+        )}
+
         <Box
           sx={{
             marginTop: 8,
@@ -87,6 +113,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
+
           <Box
             component="form"
             onSubmit={handleSubmit}
